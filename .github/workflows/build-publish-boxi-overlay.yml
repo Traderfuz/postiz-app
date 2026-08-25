@@ -25,6 +25,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Type-check orchestrator library
         run: pnpm exec tsc --noEmit --pretty false -p libraries/nestjs-libraries/tsconfig.json
+      - name: Build backend overlay
+        run: pnpm --filter ./apps/backend run build
       - name: Build orchestrator overlay
         run: pnpm --filter ./apps/orchestrator run build
       - name: Set up Docker Buildx
