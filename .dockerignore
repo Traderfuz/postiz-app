@@ -6,6 +6,8 @@ node_modules/*
 node_modules
 docker-data/*
 dist
+!apps/orchestrator/dist/
+!apps/orchestrator/dist/**
 .nx
 /apps/frontend/.next
 /apps/backend/dist
