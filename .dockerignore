@@ -23,3 +23,7 @@ dist
 .git
 .github
 reports
+!apps/backend/dist/
+!apps/backend/dist/**
+!apps/orchestrator/dist/
+!apps/orchestrator/dist/**
