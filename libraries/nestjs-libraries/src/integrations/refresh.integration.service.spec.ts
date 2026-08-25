@@ -1,3 +1,11 @@
+jest.mock('@gitroom/nestjs-libraries/integrations/integration.manager', () => ({
+  IntegrationManager: class {},
+}));
+jest.mock('@gitroom/nestjs-libraries/database/prisma/integrations/integration.service', () => ({
+  IntegrationService: class {},
+}));
+jest.mock('nestjs-temporal-core', () => ({ TemporalService: class {} }));
+
 import { classifyRefreshFailure } from './refresh.integration.service';
 
 describe('refresh failure classification', () => {
