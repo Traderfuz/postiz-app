@@ -1,0 +1,9 @@
+# Boxi reliability overlay: keep upstream v2.23.0 immutable and replace only
+# the built orchestrator output produced from this source branch.
+ARG POSTIZ_BASE=ghcr.io/gitroomhq/postiz-app@sha256:785f97312f66a347fb96cdccc4ded5a33ced69a672c89a9adc8054e7d6a21dc5
+FROM ${POSTIZ_BASE}
+
+LABEL org.opencontainers.image.source="https://github.com/Traderfuz/postiz-app"
+LABEL org.opencontainers.image.description="Boxi Postiz reliability overlay"
+
+COPY apps/orchestrator/dist/ /app/apps/orchestrator/dist/

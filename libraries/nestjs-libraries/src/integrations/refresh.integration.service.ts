@@ -7,8 +7,18 @@ import {
   SocialProvider,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { TemporalService } from 'nestjs-temporal-core';
+import { safeStringify } from '@gitroom/nestjs-libraries/integrations/social.abstract';
 
-@Injectable()
+export function classifyRefreshFailure(
+  socialProvider: Pick<SocialProvider, 'handleErrors'>,
+  error: unknown
+): 'refresh-token' | 'other' {
+  const detail = error instanceof Error ? error.message : safeStringify(error);
+  return socialProvider.handleErrors?.(detail, 0)?.type === 'refresh-token'
+    ? 'refresh-token'
+    : 'other';
+}
+
 export class RefreshIntegrationService {
   constructor(
     private _integrationManager: IntegrationManager,
@@ -73,27 +83,38 @@ export class RefreshIntegrationService {
     socialProvider: SocialProvider,
     cause = ''
   ): Promise<AuthTokenDetails | false> {
+    let refreshError: unknown = null;
     const refresh: false | AuthTokenDetails = await socialProvider
       .refreshToken(integration.refreshToken)
-      .catch((err) => false);
+      .catch((err) => {
+        refreshError = err;
+        return false as const;
+      });
 
     if (!refresh || !refresh.accessToken) {
+      console.error(
+        `Refresh failed for ${integration.providerIdentifier} (${integration.id}):`,
+        refreshError || 'no access token returned'
+      );
+      if (
+        refreshError &&
+        classifyRefreshFailure(socialProvider, refreshError) !== 'refresh-token'
+      ) {
+        return false;
+      }
       await this._integrationService.refreshNeeded(
         integration.organizationId,
         integration.id
       );
-
       await this._integrationService.informAboutRefreshError(
         integration.organizationId,
         integration,
         cause
       );
-
       await this._integrationService.disconnectChannel(
         integration.organizationId,
         integration
       );
-
       return false;
     }
 
