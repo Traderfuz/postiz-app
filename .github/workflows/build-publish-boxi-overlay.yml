@@ -17,11 +17,10 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-      - name: Set up Node and pnpm
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 22.20.0
-          cache: pnpm
       - run: corepack enable && corepack prepare pnpm@10.6.1 --activate
       - run: pnpm install --frozen-lockfile
       - name: Type-check orchestrator library
