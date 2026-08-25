@@ -6,4 +6,5 @@ FROM ${POSTIZ_BASE}
 LABEL org.opencontainers.image.source="https://github.com/Traderfuz/postiz-app"
 LABEL org.opencontainers.image.description="Boxi Postiz reliability overlay"
 
+COPY apps/backend/dist/ /app/apps/backend/dist/
 COPY apps/orchestrator/dist/ /app/apps/orchestrator/dist/
