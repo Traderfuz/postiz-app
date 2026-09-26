@@ -9,7 +9,7 @@ permissions:
 
 env:
   IMAGE: ghcr.io/traderfuz/postiz-app
-  BASE_DIGEST: sha256:785f97312f66a347fb96cdccc4ded5a33ced69a672c89a9adc8054e7d6a21dc5
+  BASE_DIGEST: sha256:01b24a4fc1055f6833122c99614805bea702fdc0ee30c9b5d09330b521fa1efa
 
 jobs:
   build-publish:
@@ -47,10 +47,10 @@ jobs:
           sbom: true
           build-args: POSTIZ_BASE=ghcr.io/gitroomhq/postiz-app@${{ env.BASE_DIGEST }}
           tags: |
-            ${{ env.IMAGE }}:boxi-v2.23.0-refreshfix
-            ${{ env.IMAGE }}:boxi-v2.23.0-refreshfix-${{ github.sha }}
+            ${{ env.IMAGE }}:boxi-v2.24.0-refreshfix
+            ${{ env.IMAGE }}:boxi-v2.24.0-refreshfix-${{ github.sha }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=boxi-v2.23.0-refreshfix-${{ github.sha }}
+            org.opencontainers.image.version=boxi-v2.24.0-refreshfix-${{ github.sha }}
             org.opencontainers.image.base.digest=${{ env.BASE_DIGEST }}
